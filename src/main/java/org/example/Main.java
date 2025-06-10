@@ -8,135 +8,82 @@ import org.openqa.selenium.support.ui.Select;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Main {
-    //String chromeDriverPath = "/Workspace/chromedriver/chromedriver.exe";
-    String chromeDriverPath = "/Users/martinlequerica/Documents/webdriver/chromedriver-mac-arm64/chromedriver";
-
     public static void main(String[] args) {
-        System.out.println("Todo listo para la ejecucion.");
-        new Main();
-    }
 
-    public Main(){
+        Usuarios usuario1 = new Usuarios("Selene Figueroa", "1122435678", "sele.figueroa@hotmail.com", "sele97", "sele222", "35", "TOP", "JUNGLA", "Argentina");
+        Usuarios usuario2 = new Usuarios("Manuel Varea", "1122785432", "manu.varea@hotmail.com", "manuuu20", "sele222", "25", "TOP", "JUNGLA", "Argentina");
+        Usuarios usuario3 = new Usuarios("Yael Pilar", "1122985346", "yae97@hotmail.com", "yae25", "ypilar", "35", "TOP", "JUNGLA", "Argentina");
+        Usuarios usuario4 = new Usuarios("Mauro Repetto", "1167349712", "maurepe@hotmail.com", "mau97", "mauu25", "75", "TOP", "JUNGLA", "Argentina");
+        Usuarios usuario5 = new Usuarios("Manuel Fedyna", "1122774307", "manu25@hotmail.com", "manu", "manuu", "98", "TOP", "JUNGLA", "Argentina");
 
-        FormA usuario1 = new FormA("Niko","B", "QA Mentor","10+");
-        FormA usuario2 = new FormA("juan1","mrtn1", "Dev mmsr","5-9");
-        FormA usuario3 = new FormA("juan","mrtn", "Dev msr","2-4");
-        FormA usuario4 = new FormA("juan12","mrtn12", "Dev jr","0-1");
+        List<Usuarios> listausuarios = new ArrayList<>();
+        listausuarios.add(usuario1);
+        listausuarios.add(usuario2);
+        listausuarios.add(usuario3);
+        listausuarios.add(usuario4);
+        listausuarios.add(usuario5);
 
-        System.out.println("Lista de usuarios cargados.");
-
-        List<FormA> usuarios = new ArrayList<>();
-        usuarios.add(usuario1);
-        /*
-        usuarios.add(usuario2);
-        usuarios.add(usuario3);
-        usuarios.add(usuario4);
-        */
-
-        for(FormA usuario: usuarios){
-            System.out.println("Usuario creado. Nombre: "+usuario.getFirstName()+" "+usuario.getLastName());
-            completeWebForm(usuario);
-            keyboardAndMouse(usuario);
+        for (Usuarios usuarios : listausuarios) {
+            System.out.println("Completando formulario para: " + usuarios.getNombre());
+            completarFormulario(usuarios);
         }
-
     }
 
-    public void completeWebForm(FormA usuario){
-        // El absolute path de donde tienen descargado el webdriver
-        // Pagina para bajar webdriver: https://googlechromelabs.github.io/chrome-for-testing/
-        System.out.println("Comienza el Test 1");
-        System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+    public static void completarFormulario ( Usuarios usuarios) {
+
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\SeleneFigueroa\\OneDrive - Kopius\\Desktop\\Automation\\chromedriver-win64\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
-        driver.get("https://formy-project.herokuapp.com/form");
+        driver.get("C:\\Users\\SeleneFigueroa\\IdeaProjects\\QAAcademy\\src\\main\\resources\\TorneoHTML\\registro.html");
 
-        String currentUrl = driver.getCurrentUrl();
-        System.out.println("Abrimos Pagina: " + currentUrl);
+        driver.manage().window().maximize();
 
-        //opcion de wait
-        //WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement nombre = driver.findElement(By.xpath("//*[@id=\"registroForm\"]/label[1]/input"));
+        nombre.sendKeys(usuarios.getNombre());
 
-        // Completar el formulario
-        WebElement firstNameInput = driver.findElement(By.xpath("(//input[@id='first-name'])[1]"));
-        firstNameInput.sendKeys(usuario.getFirstName());
+        WebElement telefono = driver.findElement(By.xpath("//*[@id=\"registroForm\"]/label[2]/input"));
+        telefono.sendKeys(usuarios.getTelefono());
 
-        WebElement lastNameInput = driver.findElement(By.xpath("(//input[@id='last-name'])[1]"));
-        lastNameInput.sendKeys(usuario.getLastName());
+        WebElement email = driver.findElement(By.xpath("//*[@id=\"registroForm\"]/label[3]/input"));
+        email.sendKeys(usuarios.getEmail());
 
-        WebElement jobTitle = driver.findElement(By.xpath("(//input[@id='job-title'])[1]"));
-        jobTitle.sendKeys(usuario.getJobTitle());
+        WebElement discord= driver.findElement(By.xpath("//*[@id=\"registroForm\"]/label[4]/input"));
+        discord.sendKeys(usuarios.getDiscord());
 
-        WebElement radioButton = driver.findElement(By.xpath("(//input[@id='radio-button-2'])[1]"));
-        radioButton.click();
+        WebElement ign = driver.findElement(By.xpath("//*[@id=\"registroForm\"]/label[5]/input"));
+        ign.sendKeys(usuarios.getIgn());
 
-        WebElement dropdown = driver.findElement(By.xpath("(//select[@id='select-menu'])[1]"));
-        Select select = new Select(dropdown);
-        select.selectByVisibleText(usuario.getYearsOfExp());
+        WebElement nivel = driver.findElement(By.xpath("//*[@id=\"registroForm\"]/label[6]/input"));
+        nivel.sendKeys(usuarios.getNivel());
 
-        // Enviar el formulario
-        //WebElement submitButton = driver.findElement(By.xpath("//input[@type='submit']"));
-        WebElement submitButton = driver.findElement(By.xpath("//a[text()='Submit']"));
-        //WebElement submitButton = driver.findElement(By.xpath("//a[@role='button' and text()='Submit']"));
+        WebElement dropdownRolprincipal = driver.findElement(By.xpath("//*[@id=\"registroForm\"]/label[7]/select"));
+        Select select = new Select(dropdownRolprincipal);
+        select.selectByVisibleText(usuarios.getRolprincipal());
 
-        submitButton.click();
+        WebElement dropdownRolsecundario = driver.findElement(By.xpath("//*[@id=\"registroForm\"]/label[8]/select"));
+        Select select1 = new Select(dropdownRolsecundario);
+        select1.selectByVisibleText(usuarios.getRolsecundario());
+
+        WebElement dropdownpais = driver.findElement(By.xpath("//*[@id=\"registroForm\"]/label[9]/select"));
+        Select select2 = new Select(dropdownpais);
+        select2.selectByVisibleText(usuarios.getPais());
+
+        WebElement registrar = driver.findElement(By.xpath("//*[@id=\"registroForm\"]/button[1]"));
+        registrar.click();
 
         try {
-            Thread.sleep(2000); // 2 segundos
+            Thread.sleep(3000); // para que se vea la acción antes de cerrar
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        //WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
 
-        //Validamos el resultado manualmente por ahora.
-        System.out.println("Titulo de página luego de enviar: " + driver.getTitle());
-        WebElement confirmationMessage = driver.findElement(By.xpath("//div[@class='container']/div[@role='alert']"));
-        System.out.println("Mensaje esperado: " + "The form was successfully submitted!");
-        System.out.println("Mensaje obtenido: " + confirmationMessage.getText());
-        //Message que aparece: The form was successfully submitted!
+        driver.quit();
 
-        // Si lo cerras, es inmediato, por ende no podes ver los resultados
-        //driver.quit();
-        System.out.println("Termino el test del form.");
-    }
 
-    public void keyboardAndMouse(FormA usuario){
-        System.out.println("Comienza el Test 2");
-        System.setProperty("webdriver.chrome.driver", chromeDriverPath);
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://formy-project.herokuapp.com/keypress");
-
-        String currentUrl = driver.getCurrentUrl();
-        System.out.println("Abrimos Pagina: " + currentUrl);
-
-        //WebElement nameInput = driver.findElement(By.xpath("(//input[@id='name'])[1]"));
-        //nameInput.sendKeys(usuario.getFirstName());
-        System.out.println("Enviamos usuario previamente creado: "+usuario.getFirstName());
-        rellenarCampo(driver, usuario.getFirstName(), "(//input[@id='name'])[1]");
-        //driver.quit();
-    }
-
-    public void rellenarCampo(WebDriver driver, String valorCampo, String xpath) {
-        WebElement nameInput = driver.findElement(By.xpath(xpath));
-        nameInput.sendKeys(valorCampo);
     }
 
 
-    public void function(){
-
-        System.setProperty("webdriver.chrome.driver", chromeDriverPath);
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://formy-project.herokuapp.com/keypress");
-        WebElement textField = driver.findElement(By.xpath("(//input[@id='name'])[1]"));
-        textField.sendKeys("Juan Martin");
-        WebElement button = driver.findElement(By.xpath("(//button[normalize-space()='Button'])[1]"));
-        button.click();
-
-        String texto = textField.getAttribute("value");
-        System.out.println("Texto: "+ texto);
-
-        String headerValue = driver.findElement(By.xpath("(//h1[normalize-space()='Keyboard and Mouse Input'])[1]")).getAttribute("value");
-        System.out.println("HeaderValue: "+ headerValue);
-
-    }
 
 }
+
