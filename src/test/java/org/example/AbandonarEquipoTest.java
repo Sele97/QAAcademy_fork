@@ -39,6 +39,35 @@ public class AbandonarEquipoTest {
             driver.quit();
         }
     }
+    private List<Usuarios> obtenerUsuarios() {
+
+        List<Usuarios> usuarios = new ArrayList<>();
+
+        usuarios.add(new Usuarios("Andres", "1122227788", "andres@test.com", "axndy#1337",
+                "axdny", "85", "Top", "", "Argentina"));
+        usuarios.add(new Usuarios("Chris", "1122227188", "chris@test.com", "",
+                "ChrisZ", "75", "Jungla", "", "Argentina"));
+        usuarios.add(new Usuarios("Sele", "1122227299", "sele@test.com", "",
+                "SeleBF", "82", "Mid", "", "Argentina"));
+        usuarios.add(new Usuarios("Ivan", "1122261788", "ivan@test.com", "",
+                "IvanGG", "70", "ADC", "", "Argentina"));
+        usuarios.add(new Usuarios("Manu", "1133227788", "manu@test.com", "",
+                "ManuV", "78", "Soporte", "", "Argentina"));
+
+        return usuarios;
+
+    }
+
+    public void validarAlerta(String mensajeEsperado) {
+        try {
+            Alert alerta = driver.switchTo().alert();
+            String alertaText = alerta.getText();
+            assertEquals(mensajeEsperado, alertaText);
+            alerta.accept();
+        } catch (org.openqa.selenium.NoAlertPresentException e) {
+            Assertions.fail("No se encontró la alerta esperada: " + mensajeEsperado);
+        }
+    }
 
     @Test
     @Order(1)
@@ -80,12 +109,8 @@ public class AbandonarEquipoTest {
             WebElement registrar = driver.findElement(By.xpath("(//button[normalize-space()='Registrarse'])[1]"));
             registrar.click();
 
-            Alert alerta = driver.switchTo().alert();
-            String alertaText = alerta.getText();
+            validarAlerta("Formulario enviado con éxito. ¡Gracias por registrarte!");
 
-            assertEquals("Formulario enviado con éxito. ¡Gracias por registrarte!", alertaText);
-
-            alerta.accept();
         }
         sleep(2);
         driver.findElement(By.xpath("(//a[normalize-space()='Equipos asignados'])[1]")).click();
@@ -110,13 +135,12 @@ public class AbandonarEquipoTest {
         WebElement guardar = driver.findElement(By.xpath("(//button[normalize-space()='Guardar Nombre'])[1]"));
         guardar.click();
 
-        Alert alerta = driver.switchTo().alert();
-        String alertaText = alerta.getText();
+        validarAlerta("Nombre del equipo guardado correctamente.");
+
         sleep(2);
 
-        assertEquals("Nombre del equipo guardado correctamente.", alertaText);
-
-        alerta.accept();
+        driver.get(formPath + "HomePage.html");
+        sleep(2);
 
     }
 
@@ -128,40 +152,28 @@ public class AbandonarEquipoTest {
         WebElement inputConfirmar = driver.findElement(By.xpath("//*[@id=\"quitTeam\"]/label/input"));
         inputConfirmar.click();
         sleep(2);
-        inputConfirmar.sendKeys("CONFIRMAR");
+        inputConfirmar.sendKeys("CONFIRMO");
         sleep(1);
 
         WebElement botonAbandonar = driver.findElement(By.xpath("//*[@id=\"quitTeam\"]/button[1]"));
         botonAbandonar.click();
         sleep(2);
 
-        Alert alerta = driver.switchTo().alert();
-        String alertaText = alerta.getText();
+        validarAlerta("Ha abandonado el equipo. No podrá unirse a otro en las proximas 24 horas.");
 
-        assertEquals("Ha abandonado el equipo. No podrá unirse a otro en las proximas 24 horas.", alertaText);
-
-        alerta.accept();
+        driver.get(formPath + "HomePage.html");
+        sleep(2);
 
     }
 
-    private List<Usuarios> obtenerUsuarios() {
-
-        List<Usuarios> usuarios = new ArrayList<>();
-
-        usuarios.add(new Usuarios("Andres", "1122227788", "andres@test.com", "axndy#1337",
-                "axdny", "85", "Top", "", "Argentina"));
-        usuarios.add(new Usuarios("Chris", "1122227188", "chris@test.com", "",
-                "ChrisZ", "75", "Jungla", "", "Argentina"));
-        usuarios.add(new Usuarios("Sele", "1122227299", "sele@test.com", "",
-                "SeleBF", "82", "Mid", "", "Argentina"));
-        usuarios.add(new Usuarios("Ivan", "1122261788", "ivan@test.com", "",
-                "IvanGG", "70", "ADC", "", "Argentina"));
-        usuarios.add(new Usuarios("Manu", "1133227788", "manu@test.com", "",
-                "ManuV", "78", "Soporte", "", "Argentina"));
-
-        return usuarios;
+    @Test
+    @Order(4)
+    public void actEquipoVacante() {
+        driver.get(formPath + "equipos2.html");
+        sleep(2);
 
     }
+
     private static void sleep(int segundos) {
 
         int ms = segundos * 1000;
