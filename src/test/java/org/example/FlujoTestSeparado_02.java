@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 
 
-public class FlujoTestSeparado {
+public class FlujoTestSeparado_02 {
     private WebDriver driver;
     private final String chromeDriverPath = "C:\\Users\\SeleneFigueroa\\OneDrive - Kopius\\Desktop\\Automation\\chromedriver-win64\\chromedriver.exe";
     private String formPath;

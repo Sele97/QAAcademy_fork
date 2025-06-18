@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 
-public class AbandonarEquipoTest {
+public class FlujoTest_03 {
 
     private WebDriver driver;
     private final String chromeDriverPath = "C:\\Users\\SeleneFigueroa\\OneDrive - Kopius\\Desktop\\Automation\\chromedriver-win64\\chromedriver.exe";
@@ -172,7 +172,31 @@ public class AbandonarEquipoTest {
         driver.get(formPath + "equipos2.html");
         sleep(2);
 
+        driver.get(formPath + "HomePage.html");
+        sleep(2);
+
     }
+
+    @Test
+    @Order(5)
+    public void votarLider() {
+        driver.get(formPath + "votar_lider.html");
+        sleep(2);
+
+        WebElement dropdown = driver.findElement(By.xpath("//*[@id=\"voteLead\"]/label/select"));
+
+        List<WebElement> opciones = dropdown.findElements(By.tagName("option"));
+
+        List<String> nombresOpciones = new ArrayList<>();
+            for (WebElement opcion : opciones) {
+                nombresOpciones.add(opcion.getText().trim());
+            }
+
+            String lider = "Andres";
+            Assertions.assertFalse(nombresOpciones.contains(lider),
+                    "El líder (" + lider + ") no debería aparecer en el dropdown.");
+
+        }
 
     private static void sleep(int segundos) {
 
@@ -184,6 +208,13 @@ public class AbandonarEquipoTest {
             Thread.currentThread().interrupt();
         }
     }
+
+
+
+
+
+
+
 
 }
 
