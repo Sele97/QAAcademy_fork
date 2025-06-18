@@ -7,16 +7,12 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FlujoTest {
+public class FlujoTestContinuo {
     private ChromeDriver driver;
 
     String chromeDriverPath = "C:\\Users\\SeleneFigueroa\\OneDrive - Kopius\\Desktop\\Automation\\chromedriver-win64\\chromedriver.exe";
@@ -35,7 +31,6 @@ public class FlujoTest {
         }
     }
 
-
     private List<Usuarios> obtenerusuarios() {
         List<Usuarios> listausuarios = new ArrayList<>();
         listausuarios.add(new Usuarios("Andres Dalmau", "1122435678", "axdny@hotmail.com", "axndy#1337", "axdny", "85", "TOP", "JUNGLA", "Argentina"));
@@ -47,10 +42,10 @@ public class FlujoTest {
     }
 
     @Test
-    public void registroformulario(){
+    public void flujocontinuo() {
         List<Usuarios> listausuarios = obtenerusuarios();
 
-        for(Usuarios obtenerUsuarios : listausuarios) {
+        for (Usuarios obtenerUsuarios : listausuarios) {
 
             driver.manage().window().maximize();
             driver.get(formPath);
@@ -103,7 +98,7 @@ public class FlujoTest {
             assertEquals("Formulario enviado con éxito. ¡Gracias por registrarte!", alertaText); //el assert equals, el primer argumento es lo que deberia aparecer y el segundo es lo que aparece
 
             alerta.accept();
-    }
+        }
         sleep(1);
 
         driver.get("file:///C:/Users/SeleneFigueroa/IdeaProjects/QAAcademy/src/main/resources/TorneoHTML/Homepage.html");
@@ -136,6 +131,7 @@ public class FlujoTest {
         WebElement botonVolver = driver.findElement(By.xpath("/html/body/div/div/div/div/dl/button/a"));
         botonVolver.click();
     }
+
     private static void sleep(int segundos) {
 
         int ms = segundos * 1000;
@@ -145,6 +141,6 @@ public class FlujoTest {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-
     }
 }
+
